@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      APP_MODE: mock
+      DATABASE_URL: sqlite+aiosqlite:///./data/copilot.db
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies (from lock-style pinned files)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Ruff lint
+        run: ruff check .
+
+      - name: Ruff format check
+        run: ruff format --check .
+
+      - name: Type check (mypy)
+        run: mypy app
+        continue-on-error: true  # type hints are advisory in this demo; do not block CI
+
+      - name: Run tests with coverage
+        run: |
+          mkdir -p data
+          pytest --cov=app --cov-report=xml --cov-report=term-missing
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage.xml
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dependency vulnerability scan (pip-audit)
+        run: |
+          python -m pip install --upgrade pip pip-audit
+          pip install -r requirements.txt
+          pip-audit --progress-spinner off || true  # report, do not fail the build
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build API image
+        run: docker build -t copilot-api:ci -f Dockerfile .
+      - name: Build UI image
+        run: docker build -t copilot-ui:ci -f Dockerfile.streamlit .

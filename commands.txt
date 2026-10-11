@@ -1,0 +1,7 @@
+poetry install --with dev                     # install runtime + dev deps
+poetry run uvicorn app.main:app --reload      # API + /docs
+poetry run python -m scripts.load_sample_docs # load demo docs
+poetry run python -m scripts.run_eval         # evaluation report
+poetry run pytest                             # 64 tests
+poetry run streamlit run ui/streamlit_app.py  # UI :8501
+docker compose up --build                     # full stack

@@ -1,0 +1,67 @@
+{
+  "name": "enterprise-policies-eval-v1",
+  "description": "Version-controlled evaluation set for the sample HR/IT policy corpus.",
+  "documents": [
+    "vacation_policy.md",
+    "expense_policy.md",
+    "remote_work_policy.md"
+  ],
+  "cases": [
+    {
+      "id": "q1",
+      "question": "How many vacation days do full-time employees accrue per year?",
+      "expected_answer": "Full-time employees accrue 20 days of paid vacation per year.",
+      "expected_documents": ["vacation_policy.md"],
+      "should_abstain": false
+    },
+    {
+      "id": "q2",
+      "question": "What is the maximum vacation rollover?",
+      "expected_answer": "Unused vacation rolls over up to a maximum of 5 days.",
+      "expected_documents": ["vacation_policy.md"],
+      "should_abstain": false
+    },
+    {
+      "id": "q3",
+      "question": "How much are meals reimbursed during business travel?",
+      "expected_answer": "Meals are reimbursed up to 50 dollars per day.",
+      "expected_documents": ["expense_policy.md"],
+      "should_abstain": false
+    },
+    {
+      "id": "q4",
+      "question": "What is the mileage reimbursement rate?",
+      "expected_answer": "Mileage is reimbursed at 0.65 dollars per mile.",
+      "expected_documents": ["expense_policy.md"],
+      "should_abstain": false
+    },
+    {
+      "id": "q5",
+      "question": "How many days per week can employees work remotely?",
+      "expected_answer": "Employees may work remotely up to three days per week with approval.",
+      "expected_documents": ["remote_work_policy.md"],
+      "should_abstain": false
+    },
+    {
+      "id": "q6",
+      "question": "Is multi-factor authentication required for remote work?",
+      "expected_answer": "Yes, multi-factor authentication is mandatory for all systems.",
+      "expected_documents": ["remote_work_policy.md"],
+      "should_abstain": false
+    },
+    {
+      "id": "q7",
+      "question": "What is the capital of France?",
+      "expected_answer": "",
+      "expected_documents": [],
+      "should_abstain": true
+    },
+    {
+      "id": "q8",
+      "question": "What is the company stock price today?",
+      "expected_answer": "",
+      "expected_documents": [],
+      "should_abstain": true
+    }
+  ]
+}
