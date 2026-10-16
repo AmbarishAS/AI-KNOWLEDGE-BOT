@@ -7,7 +7,7 @@ Three scripts for three audiences/time budgets.
 1. Start the API: `uvicorn app.main:app --reload` → open `http://localhost:8000/docs`.
 2. Hit `GET /health` → shows `mode: mock` (no keys needed).
 3. Load sample docs: `python -m scripts.load_sample_docs`.
-4. Start the UI: `streamlit run ui/streamlit_app.py` → `http://localhost:8501`.
+4. Start the UI: `python ui/gradio_app.py` → `http://localhost:7860`.
 5. Ask *"How many vacation days do employees accrue?"* → grounded answer **with a citation**
    to `vacation_policy.md`, plus token/cost/latency metrics.
 6. Ask *"What is the capital of France?"* → the assistant **abstains** (no evidence) — this is

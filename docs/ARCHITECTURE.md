@@ -53,7 +53,7 @@ flowchart TB
 ## 2. Layering
 
 1. **API & presentation** (`app/api`, `ui/`): HTTP endpoints, request/response schemas,
-   Streamlit demo. No business logic here.
+   Gradio demo. No business logic here.
 2. **Application services** (`app/services`): orchestrate use-cases (ingest a document,
    answer a chat turn). Transaction boundaries and DI live here.
 3. **Domain** (`app/domain`, `app/chunking`, `app/rag`): framework-free models and rules.
@@ -150,3 +150,35 @@ with max-step and retry limits and an approval gate for sensitive (write) tools.
 
 `APP_MODE=mock` (default) guarantees no external calls. `APP_MODE=real` requires valid
 credentials and documents which env vars are needed.
+
+## 8. Deployment topology (Docker Compose)
+
+Four services run as independent containers so the UI and API can scale separately. The
+API talks to Postgres (metadata) and Qdrant (vectors); the Gradio UI talks only to the API
+over HTTP. Dependencies are gated by healthchecks.
+
+```mermaid
+flowchart LR
+    subgraph Host / Docker Compose network
+        UI["ui\nGradio\n:7860\n(Dockerfile.gradio)"]
+        API["api\nFastAPI\n:8000\n(Dockerfile)"]
+        PG[("postgres\n:5432\nvolume: pgdata")]
+        QD[("qdrant\n:6333\nvolume: qdrantdata")]
+    end
+    Browser(("Browser")) -->|HTTP :7860| UI
+    UI -->|REST X-API-Key / X-Tenant| API
+    API -->|asyncpg| PG
+    API -->|qdrant-client| QD
+    API -. depends_on: service_healthy .-> PG
+    API -. depends_on: service_healthy .-> QD
+    UI -. depends_on: service_started .-> API
+```
+
+| Service | Build | Port | Depends on |
+|---------|-------|------|-----------|
+| `ui` | `Dockerfile.gradio` | 7860 | `api` (started) |
+| `api` | `Dockerfile` | 8000 | `postgres`, `qdrant` (healthy) |
+| `postgres` | `postgres:16-alpine` | 5432 | — |
+| `qdrant` | `qdrant/qdrant:v1.12.1` | 6333 | — |
+
+

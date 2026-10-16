@@ -56,12 +56,12 @@ services:
   ui:
     build:
       context: .
-      dockerfile: Dockerfile.streamlit
+      dockerfile: Dockerfile.gradio
     environment:
       COPILOT_API_URL: http://api:8000
       COPILOT_API_KEY: ${DEMO_API_KEY:-changeme-dev-key}
     ports:
-      - "8501:8501"
+      - "7860:7860"
     depends_on:
       api:
         condition: service_started

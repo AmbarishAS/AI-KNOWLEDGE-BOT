@@ -37,8 +37,8 @@ _Last updated: Phases 0–11 implemented; 64 tests passing; lint clean; eval ver
   Dockerfiles + compose are complete; verify with `docker compose up --build`.
 - **Real-provider calls** (`APP_MODE=real`): implemented with retries/timeouts but not
   exercised (no credentials); opt-in.
-- **Optional packages** (`qdrant-client`, `langgraph`, `mcp`, `streamlit`, `ragas`): guarded
-  imports; absence degrades gracefully. Streamlit UI is manual-tested, not in CI.
+- **Optional packages** (`qdrant-client`, `langgraph`, `mcp`, `gradio`, `ragas`): guarded
+  imports; absence degrades gracefully. Gradio UI is manual-tested, not in CI.
 - **Generation metrics** are deterministic proxies; faithful scoring needs an evaluator model
   (RAGAS) — see `docs/EVALUATION.md`.
 - **mypy** is advisory in CI (not blocking) for this demo.

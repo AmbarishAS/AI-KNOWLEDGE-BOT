@@ -69,11 +69,11 @@ curl -X POST http://localhost:8000/api/v1/chat `
   -d '{"question":"How many vacation days do employees accrue?"}'
 ```
 
-### Streamlit UI
+### Gradio UI
 
 ```powershell
-$env:COPILOT_API_URL="http://localhost:8000"; poetry run streamlit run ui/streamlit_app.py
-# open http://localhost:8501
+$env:COPILOT_API_URL="http://localhost:8000"; poetry run python ui/gradio_app.py
+# open http://localhost:7860
 ```
 
 ## Quick start (Docker Compose — API + UI + Postgres + Qdrant)
@@ -81,7 +81,7 @@ $env:COPILOT_API_URL="http://localhost:8000"; poetry run streamlit run ui/stream
 ```powershell
 copy .env.example .env         # edit if you want real mode / custom keys
 docker compose up --build      # builds and starts all services
-# API:  http://localhost:8000/docs    UI: http://localhost:8501
+# API:  http://localhost:8000/docs    UI: http://localhost:7860
 docker compose down            # stop
 docker compose down -v         # stop + reset volumes (safe demo reset)
 ```

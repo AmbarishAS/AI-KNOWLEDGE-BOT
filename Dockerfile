@@ -14,10 +14,11 @@ WORKDIR /app
 # Install Poetry.
 RUN pip install --upgrade pip && pip install "poetry==${POETRY_VERSION}"
 
-# Install runtime deps first (better layer caching). Include the "prod" extra
-# (asyncpg + qdrant-client) needed for the Dockerized Postgres/Qdrant stack.
+# Install runtime deps first (better layer caching). All previously optional
+# packages (asyncpg, qdrant-client, langgraph, mcp, gradio, ...) are now part
+# of the main dependency set.
 COPY pyproject.toml poetry.lock ./
-RUN poetry install --only main --extras prod --no-root
+RUN poetry install --only main --no-root
 
 # Copy application code.
 COPY app ./app

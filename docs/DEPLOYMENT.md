@@ -22,7 +22,7 @@ Services & ports:
 | Service | Image | Port | Notes |
 |---------|-------|------|-------|
 | api | built from `Dockerfile` | 8000 | FastAPI; non-root user; healthcheck on `/health` |
-| ui | built from `Dockerfile.streamlit` | 8501 | Streamlit |
+| ui | built from `Dockerfile.gradio` | 7860 | Gradio |
 | postgres | `postgres:16-alpine` | 5432 | volume `pgdata` |
 | qdrant | `qdrant/qdrant:v1.12.1` | 6333 | volume `qdrantdata` |
 
@@ -32,7 +32,7 @@ service_healthy`.
 
 ```mermaid
 flowchart LR
-    UI[Streamlit :8501] --> API[FastAPI :8000]
+    UI[Gradio :7860] --> API[FastAPI :8000]
     API --> PG[(Postgres :5432)]
     API --> QD[(Qdrant :6333)]
 ```
